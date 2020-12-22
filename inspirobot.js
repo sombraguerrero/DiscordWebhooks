@@ -17,27 +17,18 @@ const getOptions = {
 
 //Perform GET request with specified options.
 let imgData = '';
+var formData = new FormData();
 https.get(getOptions, (addr_res) => {
 	addr_res.on('data', (imgAddr) => { imgData += imgAddr; });
 	addr_res.on('end', () => {
 			https.get(imgData, (imgResp) => {
 			var imgOut = fs.createWriteStream('InspiroBot.jpg');
 			imgResp.pipe(imgOut);
-			var fileExists = false;
-			while (!fileExists) {
-				if (fs.existsSync('InspiroBot.jpg')) {
-					fileExists = true;
-				}
-				else {
-					console.log('Waiting for file...');
-				}
-			}
-			console.log('File exists.');
+			imgOut.on('finish', () => {
+				formData.append('content', 'InspiroBot says...');
+				formData.append('file', fs.createReadStream('InspiroBot.jpg'), {filename: 'InspiroBot.jpg'});
+				formData.submit('https://discord.com/api/webhooks/778858705197203467/{{dnd_token}}');
+			});
 		});
 	});
 });
-
-var formData = new FormData();
-formData.append('content', 'InspiroBot says...');
-formData.append('file', fs.createReadStream('InspiroBot.jpg'), {filename: 'InspiroBot.jpg'});
-formData.submit('https://discord.com/api/webhooks/778858705197203467/{{wd_dnd}}');
