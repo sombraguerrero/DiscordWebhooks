@@ -50,18 +50,20 @@ https.get(getOptions, (res) => {
   res.on('data', (chunk) => { rawData += chunk; });
   res.on('end', () => {
     try {
-		var postData = "{\"content\":\"<@540850957131579413> " + rawData + "\"}";
+		var postData = new Object();
+		postData.content = "<@540850957131579413> " + rawData;
 		if (rockFact) {
 			var rockFactLines = rawData.split(/\r?\n/);
-			postData = "{\"content\":\"<@540850957131579413> " + rockFactLines[0].slice(2).replace(/`/g, '\'') + "\"}";
+			postData.content = "<@540850957131579413> " + rockFactLines[0].slice(2).replace(/`/g, '\'');
 		}
+		var postString = JSON.stringify(postData);
       const options = {
         hostname: 'discord.com',
         path: '/api/webhooks/747963105241202800/{{pl_botspam}}',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Content-Length': Buffer.byteLength(postData)
+          'Content-Length': Buffer.byteLength(postString)
         }
       };
 
@@ -83,9 +85,9 @@ https.get(getOptions, (res) => {
       });
 
       // Write data to request body
-      req.write(postData);
+      req.write(postString);
       req.end();
-      console.log(postData);
+      console.log(postString);
     } catch (e) {
       console.error(e.message);
     }
