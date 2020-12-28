@@ -1,6 +1,5 @@
 'use strict';
 const https = require('https');
-const http = require('http');
 
 // Stage Get request to retrieve data from either dad jokes or facts API
 var decision = Math.floor(Math.random() * 10);
@@ -23,7 +22,7 @@ const getOptions = {
       };
 
 //Perform GET request with specified options.
-https.get(getOptions, (res) => {
+https.request(getOptions, (res) => {
   const { statusCode } = res;
   const contentType = res.headers['content-type'];
 
