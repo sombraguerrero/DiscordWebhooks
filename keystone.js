@@ -11,7 +11,7 @@ if (decision % 2 == 1) {
 	targetpath = '/random.txt?language=en'
 	rockFact = true;
 }
-const getOptions = {
+const contentOptions = {
         hostname: target,
         path: targetpath,
         method: 'GET',
@@ -21,27 +21,10 @@ const getOptions = {
         }
       };
 
-//Perform GET request with specified options.
-https.request(getOptions, (res) => {
+//Perform GET request with specified options. (Note that the aliased functions automatically call end() on the request object.)
+const contentReq = https.request(contentOptions, (res) => {
   const { statusCode } = res;
   const contentType = res.headers['content-type'];
-
-/****
-  let error;
-  if (statusCode !== 200) {
-    error = new Error('Request Failed.\n' +
-      `Status Code: ${statusCode}`);
-  } else if (!/^text\/html/.test(contentType)) {
-    error = new Error('Invalid content-type.\n' +
-      `Expected application/json but received ${contentType}`);
-  }
-  if (error) {
-    console.error(error.message);
-    // Consume response data to free up memory
-    res.resume();
-    return;
-  }
-  ***/
 
   // Stage POST request to Discord Webhook
   res.setEncoding('utf8');
@@ -56,7 +39,7 @@ https.request(getOptions, (res) => {
 			postData.content = "<@540850957131579413> " + rockFactLines[0].slice(2).replace(/`/g, '\'');
 		}
 		var postString = JSON.stringify(postData);
-      const options = {
+      const discordOptions = {
         hostname: 'discord.com',
         path: '/api/webhooks/747963105241202800/{{pl_botspam}}',
         method: 'POST',
@@ -66,7 +49,7 @@ https.request(getOptions, (res) => {
         }
       };
 
-      const req = https.request(options, (res) => {
+      const discordReq = https.request(discordOptions, (res) => {
         console.log(`STATUS: ${res.statusCode}`);
         console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
         res.setEncoding('utf8');
@@ -79,18 +62,24 @@ https.request(getOptions, (res) => {
         });
       });
 
-      req.on('error', (e) => {
+      discordReq.on('error', (e) => {
         console.error(`problem with request: ${e.message}`);
       });
 
       // Write data to request body
-      req.write(postString);
-      req.end();
+      discordReq.write(postString);
+	  //Since the request method is being used here for the post, we're calling end() manually on both request objects.
+      discordReq.end();
       console.log(postString);
     } catch (e) {
       console.error(e.message);
     }
   });
-}).on('error', (e) => {
+});
+
+//Using request method for the get too, so calling end() here too.
+contentReq.end();
+
+contentReq.on('error', (e) => {
   console.error(`Got error: ${e.message}`);
 });
