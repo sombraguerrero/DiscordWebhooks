@@ -16,7 +16,7 @@ var selectedImg = imgList[Math.floor(num * imgList.length)];
 var formData = new FormData();
 formData.append('content', 'Random fan art: ' + selectedImg);
 formData.append('file', fs.createReadStream(basePath + selectedImg), { filename: selectedImg});
-formData.submit('https://discordapp.com/api/webhooks/768447672758566919/{{pl_wofbros}}', (err, res) => {
+formData.submit('https://discordapp.com/api/webhooks/768447672758566919/{{wolfbros_token}}', (err, res) => {
 		var myLog = fs.createWriteStream('log.txt');
 		myLog.write("Response code: " + res.statusCode + "\r\n" + err);
 });
