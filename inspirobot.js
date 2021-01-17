@@ -11,7 +11,7 @@ function pickRemote() {
 			path: '/api?generate=true',
 			method: 'GET',
 			headers: {
-			  'User-Agent': 'Discord_Webhook/1.2 (https://github.com/sombraguerrero/RandomFanArt ;robert.setter@bobertdos.me)'
+			  'User-Agent': 'Discord_Webhook/1.2 (https://github.com/sombraguerrero/DiscordWebhooks ;robert.setter@bobertdos.me)'
 			}
 		  };
 
