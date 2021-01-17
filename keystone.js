@@ -1,13 +1,13 @@
 'use strict';
 const https = require('https');
 const fs = require('fs');
-function getKeyResponse() {
+function getKeyResponse(num) {
 	fs.readFile('/var/services/web/webhooks/responses.csv', 'utf8', function(err, data) {
 		var output = data.split('|');
 		//console.log(output);
 	
 	var keyStone = new Object();
-	keyStone.content = "<@user> " + output[Math.floor(Math.random() * output.length)];
+	keyStone.content = "<@user> " + output[Math.floor(num * output.length)];
 	var postString = JSON.stringify(keyStone);
 	try {
 		  const discordOptions = {
@@ -56,7 +56,7 @@ function pullStuff(rockFact, target, targetpath) {
 			method: 'GET',
 			headers: {
 			  'Accept': 'text/plain',
-			  'User-Agent': 'Discord_Webhook/1.2 (https://github.com/sombraguerrero/RandomFanArt ;robert.setter@bobertdos.me)'
+			  'User-Agent': 'Discord_Webhook/1.2 (https://github.com/sombraguerrero/DiscordWebhooks ;robert.setter@bobertdos.me)'
 			}
 		  };
 		  //console.log(contentOptions);
@@ -134,5 +134,5 @@ else if (decision % 3 == 1) {
 }
 else {
 	//console.log('FORM RESPONSE!!!');
-	getKeyResponse();
+	getKeyResponse(decision);
 }
