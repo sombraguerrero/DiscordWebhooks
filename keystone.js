@@ -1,13 +1,14 @@
 'use strict';
 const https = require('https');
 const fs = require('fs');
+const url = require('url');
 function getKeyResponse(num) {
 	fs.readFile('/var/services/web/webhooks/responses.csv', 'utf8', function(err, data) {
 		var output = data.split('|');
 		//console.log(output);
 	
 	var keyStone = new Object();
-	keyStone.content = "<@user> " + output[Math.floor(num * output.length)];
+	keyStone.content = "<@540850957131579413> " + output[Math.floor(num * output.length)];
 	var postString = JSON.stringify(keyStone);
 	try {
 		  const discordOptions = {
@@ -49,6 +50,25 @@ function getKeyResponse(num) {
 	});
 }
 
+function NatalieDee(comicDate) {
+	var myRoot = new Object();
+	myRoot.content = "A comic for you, <@540850957131579413>\r\nhttp://nataliedee.com/" + comicDate;
+	var embedString = JSON.stringify(myRoot);
+	console.log(embedString);
+	const discordOptions = {
+		hostname: 'discord.com',
+		path: '/api/webhooks/747963105241202800/{{pl_botspam}}',
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Content-Length': Buffer.byteLength(embedString)
+		}
+	}
+	const discordReq = https.request(discordOptions);
+	discordReq.write(embedString);
+	discordReq.end();
+}
+
 function pullStuff(rockFact, target, targetpath) {
 	const contentOptions = {
 			hostname: target,
@@ -73,10 +93,10 @@ function pullStuff(rockFact, target, targetpath) {
 	  res.on('end', () => {
 		try {
 			var postData = new Object();
-			postData.content = "<@user> " + rawData;
+			postData.content = "<@540850957131579413> " + rawData;
 			if (rockFact) {
 				var rockFactLines = rawData.split(/\r?\n/);
-				postData.content = "<@user> " + rockFactLines[0].slice(2).replace(/`/g, '\'');
+				postData.content = "<@540850957131579413> " + rockFactLines[0].slice(2).replace(/`/g, '\'');
 			}
 			var postString = JSON.stringify(postData);
 		  const discordOptions = {
@@ -123,16 +143,32 @@ function pullStuff(rockFact, target, targetpath) {
 	});
 }
 
-var decision = Math.floor(Math.random() * 12);
-if (decision % 3 == 0) {
+function selectDate(num) {
+	//Month is zero-indexed in JS!
+	var startDate = new Date(2005,0,30);
+	var endDate = new Date(2013,11,4);
+	var opts = new Object();
+	var modifier = endDate - startDate;
+	var base_msec = startDate.getTime();
+	var random_msec = base_msec + (num * modifier);
+	opts.month = opts.day = opts.year = "2-digit";
+	return new Date(random_msec).toLocaleDateString("en-US", opts).replace(/\//g, "");
+}
+
+var val = Math.random();
+var decision = Math.floor(val * 16);
+if (decision % 4 == 0) {
 	//console.log('JOKE!!!');
 	pullStuff(false, 'icanhazdadjoke.com', '');
 }
-else if (decision % 3 == 1) {
+else if (decision % 4 == 1) {
 	//console.log('ROCK FACT!!!');
 	pullStuff(true, 'uselessfacts.jsph.pl', '/random.txt?language=en');
 }
-else {
+else if (decision % 4 == 2) {
 	//console.log('FORM RESPONSE!!!');
-	getKeyResponse(decision);
+	getKeyResponse(val);
+}
+else {
+	NatalieDee(selectDate(val));
 }
