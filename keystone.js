@@ -8,7 +8,7 @@ function getKeyResponse(num) {
 		//console.log(output);
 	
 	var keyStone = new Object();
-	keyStone.content = "<@540850957131579413> " + output[Math.floor(num * output.length)];
+	keyStone.content = "<@user> " + output[Math.floor(num * output.length)];
 	var postString = JSON.stringify(keyStone);
 	try {
 		  const discordOptions = {
@@ -52,7 +52,7 @@ function getKeyResponse(num) {
 
 function NatalieDee(comicDate) {
 	var myRoot = new Object();
-	myRoot.content = "A comic for you, <@540850957131579413>\r\nhttp://nataliedee.com/" + comicDate;
+	myRoot.content = "A comic for you, <@user>\r\nhttp://nataliedee.com/" + comicDate;
 	var embedString = JSON.stringify(myRoot);
 	console.log(embedString);
 	const discordOptions = {
@@ -93,10 +93,10 @@ function pullStuff(rockFact, target, targetpath) {
 	  res.on('end', () => {
 		try {
 			var postData = new Object();
-			postData.content = "<@540850957131579413> " + rawData;
+			postData.content = "<@user> " + rawData;
 			if (rockFact) {
 				var rockFactLines = rawData.split(/\r?\n/);
-				postData.content = "<@540850957131579413> " + rockFactLines[0].slice(2).replace(/`/g, '\'');
+				postData.content = "<@user> " + rockFactLines[0].slice(2).replace(/`/g, '\'');
 			}
 			var postString = JSON.stringify(postData);
 		  const discordOptions = {
