@@ -17,19 +17,32 @@ function pickRemote() {
 
 	//Perform GET request with specified options.
 	let imgData = '';
-	var formData = new FormData();
 	https.request(getOptions, (addr_res) => {
 		addr_res.on('data', (imgAddr) => { imgData += imgAddr; });
-		addr_res.on('end', () => {
-				https.get(imgData, (imgResp) => {
-				var imgOut = fs.createWriteStream('InspiroBot.jpg');
-				imgResp.pipe(imgOut);
-				imgOut.on('finish', () => {
-					formData.append('content', 'InspiroBot says...');
-					formData.append('file', fs.createReadStream('InspiroBot.jpg'), {filename: 'InspiroBot.jpg'});
-					formData.submit('https://discord.com/api/webhooks/778858705197203467/{{dnd_token}}');
-				});
-			});
+			addr_res.on('end', () => {
+			
+			var myImage = new Object();
+			myImage.url = imgData;
+			var myEmbed = new Object();
+			myEmbed.image = myImage;
+			myEmbed.title = "InspiroBot says...";
+			var myRoot = new Object();
+			myRoot.embeds = new Array();
+			myRoot.embeds.push(myEmbed);
+			var embedString = JSON.stringify(myRoot);
+			console.log(embedString);
+			const discordOptions = {
+				hostname: 'discord.com',
+				path: '/api/webhooks/778858705197203467/{{dnd_token}}',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Content-Length': Buffer.byteLength(embedString)
+				}
+			}
+			const discordReq = https.request(discordOptions);
+			discordReq.write(embedString);
+			discordReq.end();
 		});
 	}).end();
 }
@@ -37,20 +50,27 @@ function pickRemote() {
 function pickLocal(num) {
 	// Navigate to and retrieve random file.
 	var basePath = "/var/services/web/webhooks/inspirobot_local/";
-	var imgList = fs.readdirSync(basePath);
-	var selectedImg = imgList[Math.floor(num * imgList.length)];
-
-	//Perform post to Discord
-	var formData = new FormData();
-	formData.append('content', 'InspiroBot once said...');
-	formData.append('file', fs.createReadStream(basePath + selectedImg), { filename: selectedImg});
-	formData.submit('https://discord.com/api/webhooks/778858705197203467/{{dnd_token}}', (err, res) => {
-			var myLog = fs.createWriteStream('log.txt');
-			myLog.write("Response code: " + res.statusCode + "\r\n" + err);
+	fs.readdir(basePath, (err, files) => {
+		try {
+			var selectedImg = files[Math.floor(num * files.length)];
+			//Perform post to Discord
+			var formData = new FormData();
+			formData.append('content', 'InspiroBot once said...');
+			formData.append('file', fs.createReadStream(basePath + selectedImg), { filename: selectedImg});
+			formData.submit('https://discord.com/api/webhooks/778858705197203467/{{dnd_token}}', (err, res) => {
+				var myLog = fs.createWriteStream('log.txt');
+				myLog.write("Response code: " + res.statusCode + "\r\n" + err);
+			});
+		}
+		catch(err) {
+			var errLog = fs.createWriteStream('error.log');
+			errLog.write(err.name + ": " + err.message + "\r\n");
+		}
 	});
 }
 
 var decision = Math.random();
+//pickLocal(decision);
 if (Math.floor(decision * 10) % 2 == 1) {
 	pickLocal(decision);
 }
