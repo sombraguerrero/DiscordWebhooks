@@ -9,9 +9,12 @@ var basePath = "/var/services/homes/bobertdos/Google_Drive/WD_lis-media/";
 if (Math.floor(num * 10) % 2 == 1) {
 	basePath += "/le-louvre-de-lis2/"
 }
-fs.readdir(basePath, (err, files) => {
+fs.readdir(basePath, { withFileTypes: true }, (err, files) => {
 	try {
-		var selectedImg = files[Math.floor(num * files.length)];
+		const filteredFiles = files
+        .filter(dirent => dirent.isFile())
+        .map(dirent => dirent.name);
+		var selectedImg = filteredFiles[Math.floor(num * filteredFiles.length)];
 		//Perform post to Discord
 		var formData = new FormData();
 		formData.append('content', 'Random fan art: ' + selectedImg);
