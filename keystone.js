@@ -174,6 +174,78 @@ function selectDate(num, isNat) {
 	return finalDate;
 }
 
+function ChuckNorris() {
+	const contentOptions = {
+			hostname: 'api.chucknorris.io',
+			path: '/jokes/random',
+			method: 'GET',
+			headers: {
+			  'Accept': 'application/json',
+			  'User-Agent': 'Discord_Webhook/1.2 (https://github.com/sombraguerrero/DiscordWebhooks ;robert.setter@bobertdos.me)'
+			}
+		  };
+		  //console.log(contentOptions);
+
+	//Perform GET request with specified options. (Note that the aliased functions automatically call end() on the request object.)
+	const contentReq = https.request(contentOptions, (res) => {
+	  const { statusCode } = res;
+	  const contentType = res.headers['content-type'];
+
+	  // Stage POST request to Discord Webhook
+	  res.setEncoding('utf8');
+	  let rawData = '';
+	  res.on('data', (chunk) => { rawData += chunk; });
+	  res.on('end', () => {
+		try {
+			var parsedData = JSON.parse(rawData);
+			console.log("My Content\r\n" + parsedData);
+			var postData = new Object();
+			postData.content = "<@user> " + parsedData.value;
+			var postString = JSON.stringify(postData);
+		  const discordOptions = {
+			hostname: 'discord.com',
+			path: '/api/webhooks/747963105241202800/{{pl_botspam}}',
+			method: 'POST',
+			headers: {
+			  'Content-Type': 'application/json',
+			  'Content-Length': Buffer.byteLength(postString)
+			}
+		  };
+
+		  const discordReq = https.request(discordOptions, (res) => {
+			console.log(`STATUS: ${res.statusCode}`);
+			console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+			res.setEncoding('utf8');
+
+			res.on('data', (chunk) => {
+			  console.log(`BODY: ${chunk}`);
+			});
+			res.on('end', () => {
+			  console.log('No more data in response.' + "\r\nThis is for Chuck Norris.");
+			});
+		  });
+
+		  discordReq.on('error', (e) => {
+			console.error(`problem with request: ${e.message}`);
+		  });
+
+		  // Write data to request body
+		  discordReq.write(postString);
+		  //Since the request method is being used here for the post, we're calling end() manually on both request objects.
+		  discordReq.end();
+		  console.log(postString);
+		} catch (e) {
+		  console.error(e.message);
+		}
+	});
+	});
+	//Using request method for the get too, so calling end() here too.
+	contentReq.end();
+	contentReq.on('error', (e) => {
+	  console.error(`Got error: ${e.message}`);
+	});
+}
+
 function JeopardyQ() {
 	const contentOptions = {
 			hostname: 'jservice.io',
@@ -481,7 +553,7 @@ function NasaAPOD(apodDate) {
 
 var val = Math.random();
 var debugVal = 3;
-switch (Math.floor(val * 8)) {
+switch (Math.floor(val * 9)) {
 //switch (debugVal) {
 	case 0:
 	//console.log('JOKE!!!');
@@ -512,6 +584,10 @@ switch (Math.floor(val * 8)) {
 	
 	case 6:
 	KanyeRest();
+	break;
+	
+	case 7:
+	ChuckNorris();
 	break;
 	
 	default:
