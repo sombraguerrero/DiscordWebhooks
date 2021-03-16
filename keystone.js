@@ -494,7 +494,7 @@ function NasaAPOD(apodDate) {
 			var myAuthor = new Object();
 			myAuthor.name = parsedData.copyright;
 			var myFooter = new Object();
-			myFooter.text = 'By: ' + parsedData.copyright + '\r\nPosted: ' + parsedData.date;
+			myFooter.text = 'Posted: ' + parsedData.date;
 			var myEmbed = new Object();
 			myEmbed.image = myImage;
 			myEmbed.author = myAuthor;
