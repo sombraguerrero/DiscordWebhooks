@@ -2,9 +2,10 @@
 const https = require('https');
 const fs = require('fs');
 const FormData = require('form-data');
+const MersenneTwister = require('mersennetwister');
 
 // Navigate to and retrieve random file.
-var num = Math.random();
+var num = MersenneTwister.random();
 var basePath = "/var/services/homes/bobertdos/Google_Drive/WD_lis-media/";
 if (Math.floor(num * 10) % 2 == 1) {
 	basePath += "/le-louvre-de-lis2/"
