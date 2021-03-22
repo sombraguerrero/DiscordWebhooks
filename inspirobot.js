@@ -2,7 +2,7 @@
 const https = require('https');
 const fs = require('fs');
 const FormData = require('form-data');
-
+const MersenneTwister = require('mersennetwister');
 
 // Stage Get request to retrieve data from either dad jokes or facts API
 function pickRemote() {
@@ -69,7 +69,7 @@ function pickLocal(num) {
 	});
 }
 
-var decision = Math.random();
+var decision = MersenneTwister.random();
 //pickLocal(decision);
 if (Math.floor(decision * 10) % 2 == 1) {
 	pickLocal(decision);
