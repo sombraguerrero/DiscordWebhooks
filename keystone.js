@@ -1,6 +1,7 @@
 'use strict';
 const https = require('https');
 const fs = require('fs');
+const MersenneTwister = require('mersennetwister');
 function getKeyResponse(num) {
 	fs.readFile('/var/services/web/webhooks/responses.csv', 'utf8', function(err, data) {
 		var output = data.split('|');
@@ -551,7 +552,7 @@ function NasaAPOD(apodDate) {
 	});
 }
 
-var val = Math.random();
+var val = MersenneTwister.random();
 var debugVal = 3;
 switch (Math.floor(val * 9)) {
 //switch (debugVal) {
