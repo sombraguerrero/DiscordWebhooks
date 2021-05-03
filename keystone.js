@@ -8,7 +8,7 @@ function getKeyResponse(num) {
 		//console.log(output);
 	
 	var keyStone = new Object();
-	keyStone.content = "<@540850957131579413> " + output[Math.floor(num * output.length)];
+	keyStone.content = "<@user> " + output[Math.floor(num * output.length)];
 	var postString = JSON.stringify(keyStone);
 	try {
 		  const discordOptions = {
@@ -52,7 +52,7 @@ function getKeyResponse(num) {
 
 function NatalieDee(comicDate) {
 	var myRoot = new Object();
-	myRoot.content = "A comic for you, <@540850957131579413>\r\nhttp://nataliedee.com/" + comicDate;
+	myRoot.content = "A comic for you, <@user>\r\nhttp://nataliedee.com/" + comicDate;
 	var postString = JSON.stringify(myRoot);
 	console.log(postString);
 	const discordOptions = {
@@ -93,10 +93,10 @@ function pullStuff(rockFact, target, targetpath) {
 	  res.on('end', () => {
 		try {
 			var postData = new Object();
-			postData.content = "<@540850957131579413> " + rawData;
+			postData.content = "<@user> " + rawData;
 			if (rockFact) {
 				var rockFactLines = rawData.split(/\r?\n/);
-				postData.content = "<@540850957131579413> " + rockFactLines[0].slice(2).replace(/`/g, '\'');
+				postData.content = "<@user> " + rockFactLines[0].slice(2).replace(/`/g, '\'');
 			}
 			var postString = JSON.stringify(postData);
 		  const discordOptions = {
@@ -201,7 +201,7 @@ function ChuckNorris() {
 			var parsedData = JSON.parse(rawData);
 			console.log("My Content\r\n" + parsedData);
 			var postData = new Object();
-			postData.content = "<@540850957131579413> " + parsedData.value;
+			postData.content = "<@user> " + parsedData.value;
 			var postString = JSON.stringify(postData);
 		  const discordOptions = {
 			hostname: 'discord.com',
@@ -273,7 +273,7 @@ function JeopardyQ() {
 			var parsedData = JSON.parse(rawData);
 			console.log("My Content\r\n" + parsedData);
 			var postData = new Object();
-			postData.content = "<@540850957131579413>\r\n**TRIVIA** (originally from Jeopardy)\r\nQ: " + parsedData[0].question + '\r\n\r\nA: ||' + parsedData[0].answer.replace("<i>", "*").replace("</i>", "*") + '||';
+			postData.content = "<@user>\r\n**TRIVIA** (originally from Jeopardy)\r\nQ: " + parsedData[0].question + '\r\n\r\nA: ||' + parsedData[0].answer.replace("<i>", "*").replace("</i>", "*") + '||';
 			var postString = JSON.stringify(postData);
 		  const discordOptions = {
 			hostname: 'discord.com',
@@ -345,7 +345,7 @@ function TronaldDump() {
 			var parsedData = JSON.parse(rawData);
 			console.log("My Content\r\n" + parsedData);
 			var postData = new Object();
-			postData.content = "<@540850957131579413> Trump allegedly once said...\r\n" + parsedData.value;
+			postData.content = "<@user> Trump allegedly once said...\r\n" + parsedData.value;
 			var postString = JSON.stringify(postData);
 		  const discordOptions = {
 			hostname: 'discord.com',
@@ -416,7 +416,7 @@ function KanyeRest() {
 			var parsedData = JSON.parse(rawData);
 			console.log("My Content\r\n" + parsedData);
 			var postData = new Object();
-			postData.content = "<@540850957131579413> Kanye allegedly once said...\r\n" + parsedData.quote;
+			postData.content = "<@user> Kanye allegedly once said...\r\n" + parsedData.quote;
 			var postString = JSON.stringify(postData);
 		  const discordOptions = {
 			hostname: 'discord.com',
@@ -488,7 +488,7 @@ function ThisOrThat() {
 			var parsedData = JSON.parse(rawData);
 			console.log("My Content\r\n" + parsedData);
 			var postData = new Object();
-			postData.content = "<@540850957131579413> Play with me!\r\n" + parsedData.this + " or " + parsedData.that + "?";
+			postData.content = "<@user> Play with me!\r\n" + parsedData.this + " or " + parsedData.that + "?";
 			var postString = JSON.stringify(postData);
 		  const discordOptions = {
 			hostname: 'discord.com',
@@ -561,7 +561,7 @@ function Affirm() {
 			var parsedData = JSON.parse(rawData);
 			console.log("My Content\r\n" + parsedData);
 			var postData = new Object();
-			postData.content = "<@540850957131579413> Be affirmed!\r\n" + parsedData.affirmation;
+			postData.content = "<@user> Be affirmed!\r\n" + parsedData.affirmation;
 			var postString = JSON.stringify(postData);
 		  const discordOptions = {
 			hostname: 'discord.com',
@@ -633,7 +633,7 @@ function AdviceSlip() {
 			var parsedData = JSON.parse(rawData);
 			console.log("My Content\r\n" + parsedData);
 			var postData = new Object();
-			postData.content = "<@540850957131579413> Want some advice?\r\n" + parsedData.slip.advice;
+			postData.content = "<@user> Want some advice?\r\n" + parsedData.slip.advice;
 			var postString = JSON.stringify(postData);
 		  const discordOptions = {
 			hostname: 'discord.com',
@@ -682,7 +682,7 @@ function AdviceSlip() {
 function NasaAPOD(apodDate) {
 	const contentOptions = {
 			hostname: 'api.nasa.gov',
-			path: '/planetary/apod?date=' + apodDate + '&api_key=avHVDhcVoVuHN7FDDk6WYGyhhbCKHRzP8lsA1Frs',
+			path: '/planetary/apod?date=' + apodDate + '&api_key={{nasa}}',
 			method: 'GET',
 			headers: {
 			  'Accept': 'application/json',
@@ -721,7 +721,7 @@ function NasaAPOD(apodDate) {
 			myEmbed.title = parsedData.title;
 			myEmbed.description = parsedData.explanation;
 			var myRoot = new Object();
-			myRoot.content = '<@540850957131579413>\r\n';
+			myRoot.content = '<@user>\r\n';
 			myRoot.embeds = new Array();
 			myRoot.embeds.push(myEmbed);
 			var embedString = JSON.stringify(myRoot);
@@ -769,9 +769,105 @@ function NasaAPOD(apodDate) {
 	});
 }
 
+function Pokemon(num) {
+	const contentOptions = {
+			hostname: 'pokeapi.co',
+			path: "/api/v2/pokemon/" + (Math.floor(num * 898)),
+			method: 'GET',
+			headers: {
+			  'Accept': 'application/json',
+			  'User-Agent': 'Discord_Webhook/1.2 (https://github.com/sombraguerrero/DiscordWebhooks ;robert.setter@bobertdos.me)'
+			}
+		  };
+		  //console.log(contentOptions);
+
+	//Perform GET request with specified options. (Note that the aliased functions automatically call end() on the request object.)
+	const contentReq = https.request(contentOptions, (res) => {
+	  const { statusCode } = res;
+	  const contentType = res.headers['content-type'];
+
+	  // Stage POST request to Discord Webhook
+	  res.setEncoding('utf8');
+	  let rawData = '';
+	  res.on('data', (chunk) => { rawData += chunk; });
+	  res.on('end', () => {
+		try {
+			console.log(rawData);
+			var parsedData = JSON.parse(rawData);
+			console.log("My Content\r\n" + parsedData);
+			var myImage = new Object();
+			myImage.url = parsedData.sprites.front_default;
+			var myProvider = new Object();
+			myProvider.name = 'PokéAPI';
+			myProvider.url = 'https://pokeapi.co/';
+			var typesStr = "";
+			for (let t of parsedData.types) {
+				typesStr += t.type.name + '/';
+			}
+			var myFields = new Array(
+				{name: "Height", value: (parsedData.height * 10) + "cm", inline: true}, //original value in decimeters
+				{name: "Weight", value: (parsedData.weight / 10) + "kg", inline: true}, // original value in hectograms
+				{name: "Type", value: typesStr, inline: true}
+			);
+			
+			var myEmbed = new Object();
+			myEmbed.image = myImage;
+			myEmbed.provider = myProvider;
+			myEmbed.title = parsedData.name;
+			myEmbed.fields = myFields;
+			myEmbed.color = 16711782; // Discord spec requires hexadecimal codes converted to a literal decimal value (#ff0066) 
+			var myRoot = new Object();
+			myRoot.content = '<@user> Random Pokémon!\r\n';
+			myRoot.embeds = new Array();
+			myRoot.embeds.push(myEmbed);
+			var embedString = JSON.stringify(myRoot);
+		  const discordOptions = {
+			hostname: 'discord.com',
+			path: '/api/webhooks/747963105241202800/{{pl_botspam}}',
+			method: 'POST',
+			headers: {
+			  'Content-Type': 'application/json',
+			  'Content-Length': Buffer.byteLength(embedString)
+			}
+		  };
+
+		  const discordReq = https.request(discordOptions, (res) => {
+			console.log(`STATUS: ${res.statusCode}`);
+			console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+			res.setEncoding('utf8');
+
+			res.on('data', (chunk) => {
+			  console.log(`BODY: ${chunk}`);
+			});
+			res.on('end', () => {
+			  console.log('No more data in response.' + "\r\nThis is Pokemon");
+			});
+		  });
+
+		  discordReq.on('error', (e) => {
+			console.error(`problem with request: ${e.message}`);
+		  });
+
+		  // Write data to request body
+		  discordReq.write(embedString);
+		  //Since the request method is being used here for the post, we're calling end() manually on both request objects.
+		  discordReq.end();
+		  console.log(embedString);
+		} catch (e) {
+		  console.error(e.message);
+		}
+	});
+	});
+	//Using request method for the get too, so calling end() here too.
+	contentReq.end();
+	contentReq.on('error', (e) => {
+	  console.error(`Got error: ${e.message}`);
+	});
+}
+
 var val = MersenneTwister.random();
-var debugVal = 9;
-switch (Math.floor(val * 11)) {
+var debugVal = 11;
+switch (Math.floor(val * 12)) {
 //switch (debugVal) {
 	case 0:
 	//console.log('JOKE!!!');
@@ -815,6 +911,10 @@ switch (Math.floor(val * 11)) {
 	
 	case 9:
 	Affirm();
+	break;
+	
+	case 11:
+	Pokemon(val);
 	break;
 	
 	default:

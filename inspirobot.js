@@ -2,7 +2,7 @@
 const https = require('https');
 const fs = require('fs');
 const FormData = require('form-data');
-const MersenneTwister = require('mersennetwister');
+//const MersenneTwister = require('mersennetwister');
 
 // Stage Get request to retrieve data from either dad jokes or facts API
 function pickRemote() {
@@ -26,6 +26,7 @@ function pickRemote() {
 			var myEmbed = new Object();
 			myEmbed.image = myImage;
 			myEmbed.title = "InspiroBot says...";
+			myEmbed.color = 3368448; // Discord spec requires hexadecimal codes converted to a literal decimal value (#336600) 
 			var myRoot = new Object();
 			myRoot.embeds = new Array();
 			myRoot.embeds.push(myEmbed);
@@ -52,6 +53,7 @@ function pickLocal(num) {
 	var basePath = "/var/services/web/webhooks/inspirobot_local/";
 	fs.readdir(basePath, (err, files) => {
 		try {
+			//files.sort();
 			var selectedImg = files[Math.floor(num * files.length)];
 			//Perform post to Discord
 			var formData = new FormData();
@@ -69,11 +71,15 @@ function pickLocal(num) {
 	});
 }
 
+pickRemote();
+/***
 var decision = MersenneTwister.random();
-//pickLocal(decision);
+pickLocal(decision);
 if (Math.floor(decision * 10) % 2 == 1) {
 	pickLocal(decision);
 }
 else {
 	pickRemote();
 }
+***/
+
