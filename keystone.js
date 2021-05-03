@@ -804,9 +804,15 @@ function Pokemon(num) {
 			for (let t of parsedData.types) {
 				typesStr += t.type.name + '/';
 			}
+			var cmHeight = (parsedData.height * 10);
+			var kgWeight = (parsedData.weight / 10);
+			var imperial = cmHeight * 0.39370079;
+			var ft = Math.floor(imperial / 12);
+			var inches = Math.round(imperial % 12);
+			var lbs = Math.round(kgWeight * 2.20462262);
 			var myFields = new Array(
-				{name: "Height", value: (parsedData.height * 10) + "cm", inline: true}, //original value in decimeters
-				{name: "Weight", value: (parsedData.weight / 10) + "kg", inline: true}, // original value in hectograms
+				{name: "Height", value: ft + "\' " + inches + "\" (" + cmHeight + "cm)", inline: true}, //original value in decimeters
+				{name: "Weight", value: lbs + "lbs (" + kgWeight + "kg)", inline: true}, // original value in hectograms
 				{name: "Type", value: typesStr, inline: true}
 			);
 			
