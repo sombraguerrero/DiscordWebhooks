@@ -1,4 +1,5 @@
 'use strict';
+const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const FormData = require('form-data');
@@ -81,9 +82,10 @@ function RandomColor(num) {
 	];
 	var rgbStr = " 0d(" + aRgb[0] + "," + aRgb[1] + "," + aRgb[2] + ")";
 	
+	//Credit to Russell Heimlich (http://www.russellheimlich.com/blog) for the image generator.
 	const getOptions = {
-			hostname: 'xwebtools.com',
-			path: "/dummy-image/600x400/" + hexColor + "/FFF/0x" + hexColor + encodeURIComponent(rgbStr),
+			hostname: 'localhost',
+			path: "/dummyimage/code.php?x=640x480/" + hexColor + "/FFF/&text=0x" + hexColor + encodeURIComponent(rgbStr),
 			method: 'GET',
 			headers: {
 			  'User-Agent': 'Discord_Webhook/1.2 (https://github.com/sombraguerrero/DiscordWebhooks ;robert.setter@bobertdos.me)'
@@ -93,7 +95,7 @@ function RandomColor(num) {
 
 	//Perform GET request with specified options.
 	var formData = new FormData();
-	https.request(getOptions, (addr_res) => {
+	http.request(getOptions, (addr_res) => {
 		var imgOut = fs.createWriteStream("/var/services/web/webhooks/color.png");
 		addr_res.pipe(imgOut);
 		imgOut.on('finish', () => {
